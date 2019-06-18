@@ -11,6 +11,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     Button apodBtn;
+    Button histBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent apodInten = new Intent(MainActivity.this, APODActivity.class);
                 startActivity(apodInten);
+            }
+        });
+
+        histBtn = (Button) findViewById(R.id.histBtn);
+        histBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent histInitent = new Intent(MainActivity.this, HistoryActivity.class);
+                startActivity(histInitent);
             }
         });
 

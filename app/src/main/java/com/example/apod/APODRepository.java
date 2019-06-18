@@ -1,5 +1,7 @@
 package com.example.apod;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -26,7 +28,13 @@ public class APODRepository {
         textView = txtVw;
     }
 
-    void grabImage() {
+    void grabImage(Context c) {
+
+        Intent intent = new Intent();
+        intent.setAction("com.example.apod");
+        intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        intent.putExtra("req", "Request API:  ressource planetary/apod at "+ new Date());
+        c.sendBroadcast(intent);
 
         Call<PictureOfTheDay> call = apodService.getPictureOFtheDay(BuildConfig.API_KEY);
         call.enqueue(new Callback<PictureOfTheDay>() {

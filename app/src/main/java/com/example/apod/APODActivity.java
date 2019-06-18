@@ -1,9 +1,11 @@
 package com.example.apod;
 
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -32,6 +34,8 @@ public class APODActivity extends AppCompatActivity {
 
     ProgressDialog progressDoalog;
 
+    BroadcastReceiver receiver;
+
     SaveService mService;
     boolean mBound = false;
     private Date lastRequestDate;
@@ -43,6 +47,11 @@ public class APODActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apod);
 
+        IntentFilter filter = new IntentFilter();
+        filter.addAction("com.example.apod");
+        receiver = new RequestSaver();
+        registerReceiver(receiver, filter);
+
         imgView = findViewById(R.id.imgAPOD);
         updateBtn = (Button) findViewById(R.id.updateBtn);
         updateBtn.setOnClickListener(new View.OnClickListener() {
@@ -51,7 +60,7 @@ public class APODActivity extends AppCompatActivity {
                 Date date = new Date();
                 if(date.getDay() != lastRequestDate.getDay()) {
                     lastRequestDate = date;
-                    apodrepo.grabImage();
+                    apodrepo.grabImage(APODActivity.this);
                 } else {
                     Log.i("update", "image is the same");
                 }
@@ -72,7 +81,7 @@ public class APODActivity extends AppCompatActivity {
         */
 
         apodrepo = new APODRepository((ImageView)findViewById(R.id.imgAPOD), (TextView)findViewById(R.id.descTxtView));
-        apodrepo.grabImage();
+        apodrepo.grabImage(this);
         lastRequestDate = new Date();
     }
 
@@ -88,6 +97,12 @@ public class APODActivity extends AppCompatActivity {
         super.onStop();
         unbindService(connection);
         mBound = false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiver);
     }
 
     private ServiceConnection connection = new ServiceConnection() {

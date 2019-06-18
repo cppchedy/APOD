@@ -15,7 +15,7 @@
         android:layout_marginTop="72dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Srevice 3"
+        android:text="earth"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button5" />
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/APODbtn" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/histBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
